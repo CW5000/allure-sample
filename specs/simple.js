@@ -1,10 +1,20 @@
+/*
+// Author: Colin W. Fries
+// Date: 12/xx/2019
+// Description: Sample test spec for testing Allure Reports functionality.
+// Maintenance History:
+		- 08/01/2020 - c_fries@sbcglobal.net - add console logging for visual verification of Mocha retries in action.
+*/
+
 const { addFeature, addStep, addAttachment } = require('@wdio/allure-reporter').default;
 const assert = require('assert');
+const util = require('util');
 
 
-describe('www.newbalance.com - \'describe\' corresponds to a Test Suite.', () => {
-    it('should have the right title - \'it\' corresponds to a Test Case.', () => {
-        addFeature('Page Title Verification')
+describe('This is a test suite.', () => {
+    it('This is a test case.', function() {
+		console.log('Starting test');
+        addFeature('Page Title Verification');
         browser.url('https://www.newbalance.com');
         const title = browser.getTitle();
         assert.strictEqual(title, 'Athletic Footwear &amp; Fitness Apparel - New Balance');
@@ -17,9 +27,10 @@ describe('www.newbalance.com - \'describe\' corresponds to a Test Suite.', () =>
     afterEach('Take screenshot on failure', async function(){
         if (this.currentTest.state !== "passed") {
             let screenshot = await browser.saveScreenshot('./reports/screenshots/' + 'ERROR-chrome-' + Date.now() + '.png');
-            addStep('It failed.', 
+			console.log(util.inspect(screenshot));
+            /*addStep('It failed.', 
                 addAttachment(screenshot.name, Buffer.from(screenshot.values))
-            );
+            );*/
         }
     });
 });
